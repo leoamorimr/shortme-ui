@@ -30,7 +30,7 @@ export default {
       loading.value = true;
       try {
         const response = await axios.post(
-          "/api",
+          "http://shortme-api.leonardo.ramos:8081",
           { longUrl: longUrl.value },
           {
             headers: {
