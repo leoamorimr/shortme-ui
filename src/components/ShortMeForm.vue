@@ -1,11 +1,13 @@
 <template>
   <div id="form">
-    <input v-model="longUrl" type="text" placeholder="Enter the URL..." />
-    <button @click="shortenUrl">Shorten</button>
-    <LoadingSpinner v-if="loading" />
-    <div v-if="shortUrl" class="result">
-      Short URL: <a :href="shortUrl" target="_blank">{{ shortUrl }}</a>
-    </div>
+    <form @submit.prevent="shortenUrl">
+      <input v-model="longUrl" type="text" placeholder="Enter the URL..." />
+      <button type="submit" :disabled="loading">Shorten</button>
+      <LoadingSpinner v-if="loading" />
+      <div v-if="shortUrl" class="result">
+        Short URL: <a :href="shortUrl" target="_blank">{{ shortUrl }}</a>
+      </div>
+    </form>
   </div>
 </template>
 
@@ -23,19 +25,16 @@ export default {
     const longUrl = ref("");
     const shortUrl = ref("");
     const loading = ref(false);
-    const apiEndpoint = process.env.VUE_APP_API_URL;
-    const apiPort = process.env.VUE_APP_API_PORT;
-    const apiKey = process.env.VUE_APP_API_KEY;
 
     const shortenUrl = async () => {
       loading.value = true;
       try {
         const response = await axios.post(
-          apiEndpoint + ":" + apiPort,
+          "/api",
           { longUrl: longUrl.value },
           {
             headers: {
-              "x-api-key": apiKey,
+              "X-API-KEY": "batatadoce",
             },
           }
         );
